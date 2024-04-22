@@ -20,4 +20,34 @@ inner join age_breakdown as b
 on a.user_id=b.user_id
 group by age_bucket
 ---ex4
-
+SELECT a.customer_id
+FROM customer_contracts as a 
+INNER JOIN products as b 
+ON a.product_id = b.product_id
+GROUP BY a.customer_id
+HAVING COUNT(DISTINCT b.product_category) >= 3
+---ex5
+select rp.employee_id, rp.name as name, 
+count (emp.reports_to) as reports_count,
+round (avg (emp.age)) as average_age 
+from employees as emp
+join employees as rp
+on emp.reports_to = rp.employee_id
+group by rp.employee_id, rp.name
+order by rp.employee_id 
+---ex6
+select distinct a.product_name,
+sum (b.unit) as unit
+from Products as a
+join Orders as b
+on a.product_id = b.product_id
+WHERE b.order_date BETWEEN '2020-02-01' AND '2020-02-29'
+GROUP BY b.product_id, a.product_name
+HAVING SUM(b.unit) >= 100;
+---ex7
+select a.page_id
+from pages as a 
+full join page_likes as b
+on a.page_id=b.page_id
+where b.page_id is null
+order by a.page_id
