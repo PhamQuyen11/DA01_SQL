@@ -51,3 +51,76 @@ full join page_likes as b
 on a.page_id=b.page_id
 where b.page_id is null
 order by a.page_id
+-------------Mid-course Test 
+---QS1
+select distinct replacement_cost from film
+order by replacement_cost 
+---QS2
+select  
+case when replacement_cost between 9.99 and 19.99 then 'low'
+when replacement_cost between 20.00 and 24.99 then 'medium'
+else 'high'
+end as RP_C,
+count (*) as so_luong 
+from film
+group by RP_C  
+---QS3
+select a.title, a.length, c.name from film as a
+join film_category as b
+on a.film_id=b.film_id
+full join category as c
+on b.category_id = c.category_id 
+where c.name in ('Drama','Sports')
+order by a.length desc 
+---QS4
+select c.name, 
+count (a.title) as so_luong
+from film as a
+join film_category as b
+on a.film_id=b.film_id
+full join category as c
+on b.category_id = c.category_id 
+group by c.name
+order by so_luong desc
+---QS5
+select a.first_name, a.last_name,
+count (c.title) as so_luong
+from actor as a
+full join film_actor as b
+on a.actor_id=b.actor_id
+full join film as c
+on b.film_id = c.film_id 
+group by a.first_name, a.last_name 
+order by so_luong desc
+---QS6
+select b.customer_id, a.address
+from address as a
+left join customer as b
+on a.address_id=b.address_id
+where b.address_id is null
+---QS7
+select c.city, 
+sum (p.amount) as doanh_thu
+FROM city as c
+full join address as a
+on a.city_id = c.city_id
+full join customer as ctm
+on ctm.address_id = a.address_id
+full join payment as p
+on p.customer_id = ctm.customer_id
+group by c.city
+order by sum (p.amount) desc
+---QS8
+select  ctr.country || ', ' || c.city,
+sum (p.amount) as doanh_thu
+FROM city as c
+full join address as a
+on a.city_id = c.city_id
+full join customer as ctm
+on ctm.address_id = a.address_id
+full join payment as p
+on p.customer_id = ctm.customer_id
+full join country as ctr
+on ctr.country_id = c.country_id
+group by c.city, ctr.country
+order by sum (p.amount) desc
