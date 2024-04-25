@@ -39,3 +39,13 @@ select page_id from page_likes
 )
 order by page_id
 ---ex5
+SELECT extract (month from event_date),
+count(DISTINCT user_id) as monthly_active_users
+FROM  user_actions
+where user_id in (
+select user_id from user_actions
+where extract (month from event_date) = 6)
+and 
+extract (month from event_date) = 7
+GROUP BY extract (month from event_date)
+---ex6
